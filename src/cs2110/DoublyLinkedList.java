@@ -70,12 +70,30 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
                 return false;
             }
 
+            DNode<T> currNode = head;
+            int numLinkedNodes = 0;
+
+            while (currNode.next != null) {
+                if (currNode == null) {
+                    return false;
+                }
+                if (currNode.next.prev != currNode) {
+                    return false;
+                }
+
+                currNode = currNode.next;
+                numLinkedNodes++;
+            }
+            boolean sizeMatch = this.size == numLinkedNodes;
+            boolean lastIsTail = currNode == this.tail;
+
+            return sizeMatch && lastIsTail;
+
             // TODO 1: By traversing the list from head to tail, check that
             //  (1) none of the nodes store null elements
             //  (2) the number of linked nodes is equal to the list's size
             //  (3) the last linked node is the same object as `tail`
             //  (4) the linking is consistent, i.e., for a non-tail node n, n.next.prev is n
-            return false;
         }
     }
 
@@ -118,8 +136,13 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
     @Override
     public int indexOf(T elem) {
-        // TODO 2e: Implement this method according to its specifications.
-        throw new UnsupportedOperationException();
+
+        DNode<T> currNode = head;
+        int i = 0
+        while (i < this.size()) {
+
+            i++;
+        }
     }
 
     @Override
