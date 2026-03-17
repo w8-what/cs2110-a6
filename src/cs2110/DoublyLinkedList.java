@@ -73,23 +73,27 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
             DNode<T> currNode = head;
             int numLinkedNodes = 0;
 
+            // Traversing the list from head to tail
             while (currNode.next != null) {
-                if (currNode == null) {
+                // Checks that nodes do not store null elements (1)
+                if (currNode.data == null) {
                     return false;
                 }
+                // Checks that the linking is consistent (4)
                 if (currNode.next.prev != currNode) {
                     return false;
                 }
-
                 currNode = currNode.next;
                 numLinkedNodes++;
             }
+
+            // Checks for size matching and that the last node is same as tail (2) (3)
             boolean sizeMatch = this.size == numLinkedNodes;
             boolean lastIsTail = currNode == this.tail;
 
             return sizeMatch && lastIsTail;
 
-            // TODO 1: By traversing the list from head to tail, check that
+            // TODO 1: By traversing the list from head to tail, check that (DONE!)
             //  (1) none of the nodes store null elements
             //  (2) the number of linked nodes is equal to the list's size
             //  (3) the last linked node is the same object as `tail`
@@ -114,7 +118,24 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
     @Override
     public void insert(int index, T elem) {
-        // TODO 2b: Implement this method according to its specification
+        assert 0 <= index && index <= size;
+        assert elem != null;
+
+        int i = 0;
+        DNode<T> currNode = head;
+
+        // Gets node at pos index - 1
+        while (i < index - 1) {
+            currNode = currNode.next;
+            i++;
+        }
+
+        if (index == 0) {
+
+            DNode<T> newNode = new DNode<T>(elem, head, head);
+        }
+
+        DNode<T> =
     }
 
     @Override
@@ -124,22 +145,32 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
     @Override
     public T get(int index) {
-        // TODO 2c: Implement this method according to its specifications.
-        throw new UnsupportedOperationException();
+        assert 0 <= index && index < size;
+        return getNode(index).data;
     }
 
     @Override
     public boolean contains(T elem) {
-        // TODO 2d: Implement this method according to its specifications.
-        throw new UnsupportedOperationException();
+        int i = 0;
+        DNode<T> currNode = head;
+
+        while (i < size) {
+            if (currNode.data == elem) {
+                return true;
+            }
+            currNode = currNode.next;
+            i++;
+        }
+        return false;
     }
 
     @Override
     public int indexOf(T elem) {
+        assert contains(elem);
 
         DNode<T> currNode = head;
-        int i = 0
-        while (i < this.size()) {
+        int i = 0;
+        while (i < size) {
 
             i++;
         }
@@ -159,6 +190,24 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
     @Override
     public void delete(T elem) {
         // TODO 2h: Implement this method according to its specifications.
+        Iterator<T> iterator1 = this.iterator();
+
+    }
+
+    /**
+     * Returns the DNode at position 'index'
+     */
+    private DNode<T> getNode(int index) {
+        assert 0 <= index && index < size;
+
+        int i = 0;
+        DNode<T> currNode = head;
+
+        while (i < index) {
+            currNode = currNode.next;
+            i++;
+        }
+        return currNode;
     }
 
     /**
