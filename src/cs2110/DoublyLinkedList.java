@@ -113,7 +113,11 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
     @Override
     public void add(T elem) {
-        // TODO 2a: Implement this method according to its specifications.
+        assert elem != null;
+
+        this.insert(size, elem);
+
+        assert invariantSatisfied();
     }
 
     @Override
@@ -122,10 +126,34 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
         assert elem != null;
 
         DNode<T> nodeAtIndex = getNode(index);
-        // Creating new node
 
+        if (size == 0) {
+            // case 0
+            DNode<T> newNode = new DNode<T>(elem, null, null);
+            head = newNode;
+            tail = newNode;
+        }
 
+        else if (index == 0) {
+            // case 1
+            DNode<T> newNode = new DNode<T>(elem, null, nodeAtIndex);
+            nodeAtIndex.prev = newNode;
+            head = newNode;
+        }
 
+        else if (index == size) {
+            // case 2
+            DNode<T> newNode = new DNode<T>(elem, nodeAtIndex, null);
+            nodeAtIndex.next = newNode;
+            tail = newNode;
+        }
+
+        else {
+            // case 3
+            DNode<T> newNode = new DNode<T>(elem, nodeAtIndex.prev, nodeAtIndex);
+            newNode.prev.next = newNode;
+            newNode.next.prev = newNode;
+        }
     }
 
     @Override
@@ -144,6 +172,7 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
         int i = 0;
         DNode<T> currNode = head;
 
+        // Iterates through list, checking if any element matches
         while (i < size) {
             if (currNode.data == elem) {
                 return true;
@@ -151,6 +180,8 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
             currNode = currNode.next;
             i++;
         }
+
+        // No element matches 'elem'
         return false;
     }
 
@@ -160,6 +191,7 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
         DNode<T> currNode = head;
         int i = 0;
+
         while (i < size) {
             if (currNode.data == elem) {
                 return i;
@@ -213,21 +245,22 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
     /**
      * Adds the given `elem` just before this existing list `node`.
      */
-    private void spliceIn(DNode<T> node, T elem) {
-        assert elem != null;
-
-        if (node == tail) {
-
-        }
-
-        DNode<T> newNode = new DNode<>(node.data, node, node.next);
-
-        node.data = elem;
-        node.next = newNode;
-        newNode.next.prev = newNode;
-
-        assert invariantSatisfied();
-    }
+//    private void spliceIn(DNode<T> node, T elem) {
+//        assert elem != null;
+//
+//        if (node == tail) {
+//            DNode<T> newNode = new DNode<>(node.data, node, node.next);
+//
+//        }
+//
+//        DNode<T> newNode = new DNode<>(node.data, node, node.next);
+//
+//        node.data = elem;
+//        node.next = newNode;
+//        newNode.next.prev = newNode;
+//
+//        assert invariantSatisfied();
+//    }
 
     /**
      * Return an iterator over the elements of this list (in forward order). To ensure the
