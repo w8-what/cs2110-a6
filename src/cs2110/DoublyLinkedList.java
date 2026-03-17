@@ -121,21 +121,11 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
         assert 0 <= index && index <= size;
         assert elem != null;
 
-        int i = 0;
-        DNode<T> currNode = head;
+        DNode<T> nodeAtIndex = getNode(index);
+        // Creating new node
 
-        // Gets node at pos index - 1
-        while (i < index - 1) {
-            currNode = currNode.next;
-            i++;
-        }
 
-        if (index == 0) {
 
-            DNode<T> newNode = new DNode<T>(elem, head, head);
-        }
-
-        DNode<T> =
     }
 
     @Override
@@ -171,14 +161,22 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
         DNode<T> currNode = head;
         int i = 0;
         while (i < size) {
-
+            if (currNode.data == elem) {
+                return i;
+            }
             i++;
         }
+        return -1;
     }
 
     @Override
     public void set(int index, T elem) {
-        // TODO 2f: Implement this method according to its specifications.
+        assert 0 <= index && index < size();
+        assert elem != null;
+
+        this.getNode(index).data = elem;
+
+        assert invariantSatisfied();
     }
 
     @Override
@@ -189,9 +187,11 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
     @Override
     public void delete(T elem) {
-        // TODO 2h: Implement this method according to its specifications.
-        Iterator<T> iterator1 = this.iterator();
+        assert contains(elem);
 
+        this.remove(this.indexOf(elem));
+
+        assert invariantSatisfied();
     }
 
     /**
@@ -208,6 +208,25 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
             i++;
         }
         return currNode;
+    }
+
+    /**
+     * Adds the given `elem` just before this existing list `node`.
+     */
+    private void spliceIn(DNode<T> node, T elem) {
+        assert elem != null;
+
+        if (node == tail) {
+
+        }
+
+        DNode<T> newNode = new DNode<>(node.data, node, node.next);
+
+        node.data = elem;
+        node.next = newNode;
+        newNode.next.prev = newNode;
+
+        assert invariantSatisfied();
     }
 
     /**
