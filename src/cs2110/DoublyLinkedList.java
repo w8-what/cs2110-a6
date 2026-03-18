@@ -86,18 +86,16 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
                 currNode = currNode.next;
                 numLinkedNodes++;
             }
+            // Checks that tail's data is not null
+            if (currNode.data == null) {
+                return false;
+            }
 
             // Checks for size matching and that the last node is same as tail (2) (3)
             boolean sizeMatch = this.size == numLinkedNodes;
             boolean lastIsTail = currNode == this.tail;
 
             return sizeMatch && lastIsTail;
-
-            // TODO 1: By traversing the list from head to tail, check that (DONE!)
-            //  (1) none of the nodes store null elements
-            //  (2) the number of linked nodes is equal to the list's size
-            //  (3) the last linked node is the same object as `tail`
-            //  (4) the linking is consistent, i.e., for a non-tail node n, n.next.prev is n
         }
     }
 
@@ -300,6 +298,8 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
          * reaches the end of the list.
          */
         private DNode<T> nextToVisit;
+        private boolean canRemove = false;
+        private DNode<T> lastReturned = null;
 
         /**
          * Constructs a new ListIterator over this list
@@ -319,16 +319,38 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
                 throw new NoSuchElementException();
             }
             T elem = nextToVisit.data;
+            lastReturned = nextToVisit;
             nextToVisit = nextToVisit.next;
+            canRemove = true;
             return elem;
         }
 
         @Override
         public void remove() {
-            // TODO 4: Implement this method according to the `Iterator.remove()` specifications.
-            //  This may require you to add fields to the `ListIterator` class and modify these
-            //  fields within other `ListIterator` methods.
-            throw new UnsupportedOperationException();
+            assert canRemove;
+            DNode<T> nodeToRemove = lastReturned;
+
+            if (size == 1) {
+                head = null;
+                tail = null;
+            }
+
+            else if (nodeToRemove == head) {
+                head = nodeToRemove.next;
+                head.prev = null;
+            }
+
+            else if (nodeToRemove == tail) {
+                tail = nodeToRemove.prev;
+                tail.next = null;
+            }
+
+            else {
+                nodeToRemove.prev.next = nodeToRemove.next;
+                nodeToRemove.next.prev = nodeToRemove.prev;
+            }
+            size--;
+            canRemove = false;
         }
     }
 }
