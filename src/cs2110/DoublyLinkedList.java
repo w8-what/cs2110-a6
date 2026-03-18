@@ -30,8 +30,8 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
         DNode<T> prev;
 
         /**
-         * Create a Node containing element `elem`, pointing backward to node 'prev' (may be `null`),
-         * and pointing forward to node `next` (may be `null`).
+         * Create a Node containing element `elem`, pointing backward to node 'prev' (may be
+         * `null`), and pointing forward to node `next` (may be `null`).
          */
         DNode(T elem, DNode<T> prev, DNode<T> next) {
             data = elem;
@@ -128,17 +128,13 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
             DNode<T> newNode = new DNode<T>(elem, null, null);
             head = newNode;
             tail = newNode;
-        }
-
-        else if (index == size) {
+        } else if (index == size) {
             // case 2: insert at the end of the list
             DNode<T> nodeAtIndex = getNode(index - 1);
             DNode<T> newNode = new DNode<T>(elem, nodeAtIndex, null);
             nodeAtIndex.next = newNode;
             tail = newNode;
-        }
-
-        else {
+        } else {
             DNode<T> nodeAtIndex = getNode(index);
 
             // case 3: insert at the beginning of the list
@@ -147,9 +143,7 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
                 DNode<T> newNode = new DNode<T>(elem, null, nodeAtIndex);
                 nodeAtIndex.prev = newNode;
                 head = newNode;
-            }
-
-            else {
+            } else {
                 // case 4: all other cases
                 DNode<T> newNode = new DNode<T>(elem, nodeAtIndex.prev, nodeAtIndex);
                 newNode.prev.next = newNode;
@@ -226,9 +220,7 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
         if (size == 1) {
             head = null;
             tail = null;
-        }
-
-        else {
+        } else {
             // case 2: remove the first node of the list
             if (index == 0) {
                 head = nodeAtIndex.next;
@@ -327,30 +319,28 @@ public class DoublyLinkedList<T> implements CS2110List<T> {
 
         @Override
         public void remove() {
-            assert canRemove;
+            if (!canRemove) {
+                throw new IllegalStateException();
+            }
+
             DNode<T> nodeToRemove = lastReturned;
 
             if (size == 1) {
                 head = null;
                 tail = null;
-            }
-
-            else if (nodeToRemove == head) {
+            } else if (nodeToRemove == head) {
                 head = nodeToRemove.next;
                 head.prev = null;
-            }
-
-            else if (nodeToRemove == tail) {
+            } else if (nodeToRemove == tail) {
                 tail = nodeToRemove.prev;
                 tail.next = null;
-            }
-
-            else {
+            } else {
                 nodeToRemove.prev.next = nodeToRemove.next;
                 nodeToRemove.next.prev = nodeToRemove.prev;
             }
             size--;
             canRemove = false;
+            assert invariantSatisfied();
         }
     }
 }
